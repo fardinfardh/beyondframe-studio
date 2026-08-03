@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var b=f.querySelector('button[type=submit]');var o=b.textContent;b.textContent='Sending…';b.disabled=true;
     try{
       var d=Object.fromEntries(new FormData(f));
-      var r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(d)});
+      var r=await fetch('https://formsubmit.co/ajax/hello@beyondframe.studio',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(d)});
       var j=await r.json();
       if(j.success){s.className='form-status success';s.textContent='Thank you, your message has been sent. I\'ll get back to you soon.';f.reset();}
       else{s.className='form-status error';s.textContent=j.message||'Something went wrong. Please email hello@beyondframe.studio directly.';}
@@ -62,10 +62,10 @@ document.addEventListener('DOMContentLoaded',function(){
       </div>
       <div class="reveal">
         <form id="contact-form">
-          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
-          <input type="hidden" name="subject" value="New Contact Message, Beyond Frame">
-          <input type="hidden" name="from_name" value="Beyond Frame Website">
-          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="_subject" value="New Contact Message - Beyond Frame">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
           <div class="form-row">
             <div class="form-field"><label>Full Name</label><input type="text" name="name" required></div>
             <div class="form-field"><label>Email</label><input type="email" name="email" required></div>
