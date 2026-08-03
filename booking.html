@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet"><script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
 </head>
 <body>
 <header class="site-header">
@@ -33,14 +33,24 @@
 
 <section class="page-offset" style="padding-bottom:16px"><div class="container"><div class="reveal narrow">
   <span class="eyebrow">Book a Direction Session</span>
-  <h1 class="display">Choose a time and confirm your session.</h1>
-  <p class="muted" style="margin-top:14px">Pick a slot below, answer a few short questions about your work, and complete secure payment, all in one step. Your booking is confirmed the moment payment is received.</p>
+  <h1 class="display">Secure your session in two steps.</h1>
+  <p class="muted" style="margin-top:14px">First complete your secure payment, then choose a date and time that suits you. Your place is confirmed the moment both steps are done.</p>
 </div></div></section>
 <section style="padding:34px 0 90px"><div class="container">
     <div class="booking-grid">
       <div class="reveal">
-        <div class="calendly-wrap"><div class="calendly-inline-widget" data-url="https://calendly.com/hello-beyondframe/direction-session?hide_gdpr_banner=1&primary_color=c2971f" style="min-width:320px;height:1050px;"></div></div>
-        <p class="form-note" style="margin-top:14px">The scheduler expands as you go, so you simply scroll the page, there is no separate scroll box. After you choose a time and complete payment, you'll receive a confirmation email with your Google Meet link. Please send 10 to 15 images and a few notes before we meet.</p>
+        <div class="step reveal" style="border-top:none;padding-top:0"><div class="step-num">01</div>
+          <div><h3>Pay for your session</h3>
+            <p>Complete your USD 90 payment securely via Stripe (card, Apple Pay, or Link). You'll receive a receipt by email.</p>
+            <a href="https://buy.stripe.com/4gM6oJ6HU7CU2Yz5z0grS00" class="btn btn-gold btn-arrow" style="margin-top:14px">Proceed to Secure Payment · USD 90</a>
+          </div>
+        </div>
+        <div class="step reveal"><div class="step-num">02</div>
+          <div><h3>Choose your date &amp; time</h3>
+            <p>Right after payment you're taken to the scheduling page to pick a slot and answer a few short questions about your work. You'll then get a confirmation email with your Google Meet link. Please send 10 to 15 images and a few notes before we meet.</p>
+            <a href="https://calendly.com/hello-beyondframe/direction-session" target="_blank" rel="noopener" class="btn btn-outline-dark btn-arrow" style="margin-top:14px">Already paid? Schedule here</a>
+          </div>
+        </div>
       </div>
       <aside class="reveal">
         <div class="summary-card">
