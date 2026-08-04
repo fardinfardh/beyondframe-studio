@@ -289,7 +289,9 @@ body.menu-open{overflow:hidden}
 .included li::before{content:"✓";position:absolute;left:0;color:var(--gold-soft);font-weight:700}
 .price-tag{font-family:var(--serif);font-size:2.7rem;color:var(--navy);font-weight:600}
 .secure-note{display:flex;gap:9px;margin-top:18px;font-size:12.5px;color:var(--muted)}
-.calendly-wrap{background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden;min-height:1050px}
+.calendly-wrap{background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.calendly-wrap iframe{width:100%;height:760px;border:0;display:block}
+@media(max-width:860px){.calendly-wrap iframe{height:680px}}
 
 /* ---------- Newsletter + Footer ---------- */
 .site-footer{background:var(--dark);color:rgba(246,242,234,.72);padding:76px 0 30px}
