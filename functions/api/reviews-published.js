@@ -11,7 +11,7 @@ export async function onRequestGet({ env }) {
       const v = await env.REVIEWS.get(k.name);
       if (!v) continue;
       const r = JSON.parse(v);
-      if (r.status === 'approved' && r.consent) out.push({ name: r.name, country: r.country, profession: r.profession, rating: r.rating, comment: r.comment, photo: r.photo, created: r.created });
+      if (r.status === 'approved' && r.consent) out.push({ name: r.name, country: r.country, profession: r.profession, portfolio: r.portfolio, rating: r.rating, comment: r.comment, photo: r.photo, created: r.created });
     }
     cursor = list.list_complete ? null : list.cursor;
   } while (cursor);

@@ -70,6 +70,7 @@ document.getElementById('load').addEventListener('click', load);
 function flash(t,c){ msg.className='msg '+c; msg.textContent=t; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
 function stars(n){ var o=''; for(var i=0;i<5;i++) o+= i<n?'★':'☆'; return o; }
+function safeHref(u){ u=String(u||'').trim(); if(!u) return ''; if(/^https?:\/\//i.test(u)) return u; if(/^@[a-zA-Z0-9._]+$/.test(u)) return 'https://instagram.com/'+u.slice(1); if(/^[a-z0-9.-]+\.[a-z]{2,}(\/[^\s]*)?$/i.test(u)) return 'https://'+u; return ''; }
 async function load(){
   KEY=keyEl.value.trim(); if(!KEY){ flash('Enter your admin key.','err'); return; }
   flash('Loading…','info');
@@ -92,6 +93,7 @@ function render(){
       '<span class="tag '+r.status+'">'+r.status+'</span>'+
       '<div class="who">'+esc(r.name)+'</div>'+
       '<div class="meta">'+meta+(meta&&d?' · ':'')+esc(d)+'</div>'+
+      (r.portfolio?'<div class="meta">'+(safeHref(r.portfolio)?'<a href="'+esc(safeHref(r.portfolio))+'" target="_blank" rel="noopener nofollow" style="color:var(--gold)">'+esc(r.portfolio)+'</a>':esc(r.portfolio))+'</div>':'')+
       '<div class="stars">'+stars(r.rating)+'</div>'+
       '<div class="quote">'+esc(r.comment)+'</div>'+
       '<div class="actions">'+

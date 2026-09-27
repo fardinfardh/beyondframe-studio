@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded',function(){
     e.preventDefault(); st.className='form-status';
     if(!rating){ st.className='form-status error'; st.textContent='Please choose a star rating.'; return; }
     var btn=form.querySelector('button[type=submit]'); var old=btn.textContent; btn.disabled=true; btn.textContent='Submitting…';
-    var d={ name:form.name.value, country:form.country.value, profession:form.profession.value, rating:rating, comment:form.comment.value, code:form.code.value, consent:document.getElementById('rv-consent').checked, photo:photoData, _hp:document.getElementById('rv-hp').value };
+    var d={ name:form.name.value, country:form.country.value, profession:form.profession.value, portfolio:form.portfolio.value, rating:rating, comment:form.comment.value, code:form.code.value, consent:document.getElementById('rv-consent').checked, photo:photoData, _hp:document.getElementById('rv-hp').value };
     try{
       var r=await fetch('/api/review-submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
       var j=await r.json();
@@ -102,13 +102,14 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="form-field"><label>Country</label><input type="text" name="country"></div>
     </div>
     <div class="form-field"><label>Profession or field (optional)</label><input type="text" name="profession" placeholder="e.g. Photographer, Curator, Student"></div>
+    <div class="form-field"><label>Online portfolio (optional)</label><input type="text" name="portfolio" placeholder="Instagram or website link"></div>
     <div class="form-field"><label>Profile photo (optional)</label>
       <input type="file" id="rv-photo" accept="image/*">
       <div id="rv-photo-prev" class="rv-photo-prev"><img alt="preview"><button type="button" id="rv-photo-clear">Remove</button></div>
       <p class="form-note">A clear headshot works best. It is optional.</p>
     </div>
-    <div class="form-field"><label>Access code</label><input type="text" name="code" required placeholder="The code Hossein gave you"></div>
-    <label class="rv-consent"><input type="checkbox" id="rv-consent"> I allow Beyond Frame to publish this review, with my name, country, profession and photo, on its website.</label>
+    <div class="form-field"><label>Access code</label><input type="text" name="code" required placeholder="The code Beyond Frame emailed you"><p class="form-note">You'll find this in your invitation email from Beyond Frame.</p></div>
+    <label class="rv-consent"><input type="checkbox" id="rv-consent"> I allow Beyond Frame to publish this review on its website, together with my name, country, profession, photo and portfolio link.</label>
     <input type="text" id="rv-hp" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button type="submit" class="btn btn-gold btn-arrow" style="margin-top:8px">Submit Review</button>
     <div class="form-status" id="rv-status"></div>

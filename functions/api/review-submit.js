@@ -17,6 +17,7 @@ export async function onRequestPost({ request, env }) {
     const rec = {
       id, status: 'pending', created: new Date().toISOString(),
       name: s(b.name, 80), country: s(b.country, 60), profession: s(b.profession, 90),
+      portfolio: s(b.portfolio, 200),
       rating, comment: s(b.comment, 4000), photo, consent: true
     };
     await env.REVIEWS.put('review:' + id, JSON.stringify(rec));
