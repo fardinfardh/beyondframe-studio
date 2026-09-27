@@ -321,7 +321,11 @@ body.menu-open{overflow:hidden}
 .footer-news .btn{justify-content:center;background:transparent;border:1px solid var(--gold-btn);color:var(--gold-btn)}
 .footer-news .btn:hover{background:var(--gold-btn);color:var(--ink)}
 .footer-news .sub{font-size:12.5px;color:rgba(246,242,234,.55);text-align:center}
-.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:26px;font-size:13px}
+.footer-bottom{padding-top:26px;font-size:13px}
+.footer-legal{font-size:12px;color:rgba(246,242,234,.4);line-height:1.6;margin-bottom:16px}
+.footer-copy{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy a{color:rgba(246,242,234,.72)}
+.footer-copy a:hover{color:#fff}
 
 /* ---------- WhatsApp ---------- */
 .wa-float{position:fixed;right:22px;bottom:22px;z-index:90;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px -8px rgba(37,211,102,.6);transition:transform .3s var(--ease)}
