@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Reviews — Admin | Beyond Frame</title>
+<style>
+:root{--bg:#211a14;--panel:#2c241c;--line:#463a2d;--gold:#e4b62b;--cream:#ece6db;--muted:#a99e8d;--green:#4f9d5b;--red:#b25b52}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--cream);line-height:1.5;padding:24px}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-size:1.5rem;margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:18px}
+input[type=password],input[type=text]{background:#1a140f;border:1px solid var(--line);color:var(--cream);padding:10px 12px;border-radius:6px;font-size:14px;min-width:220px}
+button{cursor:pointer;font-size:13px;font-weight:600;border:0;border-radius:6px;padding:9px 16px;background:var(--gold);color:#241a10}
+button.ghost{background:transparent;border:1px solid var(--line);color:var(--cream)}
+button.ghost.on{background:var(--gold);color:#241a10;border-color:var(--gold)}
+button.ok{background:var(--green);color:#fff}
+button.no{background:transparent;border:1px solid var(--red);color:var(--red)}
+button.del{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.filters{display:flex;gap:8px;margin-bottom:16px}
+.count{color:var(--muted);font-size:13px;margin-left:auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:14px;display:flex;gap:16px}
+.card img.avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--line)}
+.avatar-none{width:64px;height:64px;border-radius:50%;background:#1a140f;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.4rem;flex-shrink:0}
+.card .body{flex:1;min-width:0}
+.who{font-weight:700}
+.meta{color:var(--muted);font-size:13px;margin-bottom:6px}
+.stars{color:var(--gold);letter-spacing:2px;margin-bottom:8px}
+.quote{white-space:pre-wrap;font-size:15px;margin-bottom:12px}
+.tag{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:99px;margin-bottom:8px}
+.tag.pending{background:#4a3b1c;color:var(--gold)}
+.tag.approved{background:#234a28;color:#9fe0a8}
+.tag.rejected{background:#4a2622;color:#e5a49c}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.msg{padding:12px 14px;border-radius:6px;margin-bottom:14px;font-size:14px;display:none}
+.msg.err{display:block;background:#4a2622;color:#e5a49c}
+.msg.info{display:block;background:#2c241c;color:var(--muted);border:1px solid var(--line)}
+.empty{color:var(--muted);text-align:center;padding:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Beyond Frame — Reviews</h1>
+  <p class="sub">Private moderation. Approve a review to make it eligible for the Testimonials page.</p>
+  <div class="bar">
+    <input type="password" id="key" placeholder="Admin key" autocomplete="off">
+    <button id="load">Load reviews</button>
+    <button class="ghost" id="save">Remember key</button>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="msg" id="msg"></div>
+  <div class="filters">
+    <button class="ghost on" data-f="pending">Pending</button>
+    <button class="ghost" data-f="approved">Approved</button>
+    <button class="ghost" data-f="rejected">Rejected</button>
+    <button class="ghost" data-f="all">All</button>
+  </div>
+  <div id="list"></div>
+</div>
+<script>
+var KEY='', ALL=[], FILTER='pending';
+var keyEl=document.getElementById('key'), msg=document.getElementById('msg'), listEl=document.getElementById('list'), countEl=document.getElementById('count');
+try{ var s=localStorage.getItem('bf_admin_key'); if(s){ keyEl.value=s; } }catch(e){}
+document.getElementById('save').addEventListener('click',function(){ try{ localStorage.setItem('bf_admin_key', keyEl.value); flash('Key saved in this browser.','info'); }catch(e){} });
+document.getElementById('load').addEventListener('click', load);
+[].forEach.call(document.querySelectorAll('.filters button'),function(b){ b.addEventListener('click',function(){ FILTER=b.dataset.f; document.querySelectorAll('.filters button').forEach(function(x){x.classList.toggle('on',x===b);}); render(); }); });
+function flash(t,c){ msg.className='msg '+c; msg.textContent=t; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
+function stars(n){ var o=''; for(var i=0;i<5;i++) o+= i<n?'★':'☆'; return o; }
+async function load(){
+  KEY=keyEl.value.trim(); if(!KEY){ flash('Enter your admin key.','err'); return; }
+  flash('Loading…','info');
+  try{
+    var r=await fetch('/api/reviews-list?key='+encodeURIComponent(KEY),{cache:'no-store'});
+    var j=await r.json();
+    if(!j.ok){ flash(j.error||'Could not load.','err'); return; }
+    ALL=j.reviews||[]; msg.className='msg'; render();
+  }catch(e){ flash('Network error.','err'); }
+}
+function render(){
+  var items=ALL.filter(function(r){ return FILTER==='all'?true:r.status===FILTER; });
+  countEl.textContent=ALL.length+' total · '+items.length+' shown';
+  if(!items.length){ listEl.innerHTML='<div class="empty">No '+FILTER+' reviews.</div>'; return; }
+  listEl.innerHTML=items.map(function(r){
+    var av=r.photo?'<img class="avatar" src="'+r.photo+'">':'<div class="avatar-none">'+esc((r.name||'?').charAt(0))+'</div>';
+    var meta=[r.profession,r.country].filter(Boolean).map(esc).join(' · ');
+    var d=r.created?new Date(r.created).toLocaleString():'';
+    return '<div class="card">'+av+'<div class="body">'+
+      '<span class="tag '+r.status+'">'+r.status+'</span>'+
+      '<div class="who">'+esc(r.name)+'</div>'+
+      '<div class="meta">'+meta+(meta&&d?' · ':'')+esc(d)+'</div>'+
+      '<div class="stars">'+stars(r.rating)+'</div>'+
+      '<div class="quote">'+esc(r.comment)+'</div>'+
+      '<div class="actions">'+
+        (r.status!=='approved'?'<button class="ok" data-a="approve" data-id="'+r.id+'">Approve</button>':'')+
+        (r.status!=='rejected'?'<button class="no" data-a="reject" data-id="'+r.id+'">Reject</button>':'')+
+        '<button class="del" data-a="delete" data-id="'+r.id+'">Delete</button>'+
+      '</div></div></div>';
+  }).join('');
+  [].forEach.call(listEl.querySelectorAll('button[data-a]'),function(b){ b.addEventListener('click',function(){ act(b.dataset.a,b.dataset.id,b); }); });
+}
+async function act(action,id,btn){
+  if(action==='delete' && !confirm('Delete this review permanently?')) return;
+  btn.disabled=true;
+  try{
+    var r=await fetch('/api/review-action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:KEY,id:id,action:action})});
+    var j=await r.json();
+    if(!j.ok){ flash(j.error||'Action failed.','err'); btn.disabled=false; return; }
+    if(action==='delete'){ ALL=ALL.filter(function(x){return x.id!==id;}); }
+    else { ALL.forEach(function(x){ if(x.id===id) x.status=(action==='approve'?'approved':'rejected'); }); }
+    render();
+  }catch(e){ flash('Network error.','err'); btn.disabled=false; }
+}
+if(keyEl.value) load();
+</script>
+</body>
+</html>
